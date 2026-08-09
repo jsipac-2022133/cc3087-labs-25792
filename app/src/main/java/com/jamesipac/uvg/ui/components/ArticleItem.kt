@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
@@ -24,11 +25,12 @@ fun ArticleItem(
     modifier: Modifier = Modifier
 ) {
     Row(
-        modifier = modifier,
+        modifier = modifier.padding(vertical = 14.dp),
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Column(
-            modifier = Modifier.weight(1f)
+            modifier = Modifier.weight(1f),
+            verticalArrangement = Arrangement.spacedBy(6.dp)
         ) {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -38,7 +40,7 @@ fun ArticleItem(
                     modifier = Modifier
                         .size(20.dp)
                         .clip(CircleShape)
-                        .background(Color.Red)
+                        .background(article.avatarColor)
                 )
 
                 Text(
@@ -50,7 +52,8 @@ fun ArticleItem(
             Text(
                 text = article.title,
                 fontSize = 18.sp,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                color = Color(0xFF242424)
             )
 
             Text(
@@ -61,7 +64,7 @@ fun ArticleItem(
 
             Row {
                 Text(
-                    text = "${article.readingMinutes} min - ${article.date}",
+                    text = "${article.readingMinutes} min de lectura · ${article.date}",
                     fontSize = 12.sp,
                     color = Color.Gray
                 )
@@ -71,7 +74,7 @@ fun ArticleItem(
         Box(
             modifier = Modifier
                 .size(80.dp)
-                .background(Color.Cyan)
+                .background(article.thumbnailColor)
         )
     }
 }

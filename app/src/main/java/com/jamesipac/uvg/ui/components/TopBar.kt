@@ -26,7 +26,9 @@ fun TopBar(
     ) {
 
 Row(
-    verticalAlignment = Alignment.CenterVertically
+    verticalAlignment = Alignment.CenterVertically,
+    horizontalArrangement = Arrangement.spacedBy(12.dp)
+
 ){
     Box(
         modifier = Modifier
@@ -42,7 +44,7 @@ Row(
 }
     Box(
         modifier = Modifier
-            .size(20.dp)
+            .size(30.dp)
             .clip(CircleShape)
             .background(Color.Blue)
     )
