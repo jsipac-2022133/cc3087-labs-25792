@@ -44,7 +44,7 @@ fun FeedScreen(
     articles: List<Article>,
     modifier: Modifier = Modifier
 ) {
-    var applauseCount by remember {
+    var applauseCount by rememberSaveable {
         mutableStateOf(0)
     }
 
