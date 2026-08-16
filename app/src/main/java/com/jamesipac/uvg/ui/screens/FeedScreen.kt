@@ -15,8 +15,17 @@ conceptos y revisar errores durante el desarrollo.
 package com.jamesipac.uvg.ui.screens
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Switch
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -33,6 +42,26 @@ fun FeedScreen(
     articles: List<Article>,
     modifier: Modifier = Modifier
 ) {
+    var searchQuery by rememberSaveable {
+        mutableStateOf("")
+    }
+
+    var showShortReadsOnly by rememberSaveable {
+        mutableStateOf(false)
+    }
+
+    val filteredArticles = articles.filter { article ->
+
+        val matchesSearch =
+            article.author.contains(searchQuery, ignoreCase = true) ||
+                    article.title.contains(searchQuery, ignoreCase = true)
+
+        val matchesDuration =
+            !showShortReadsOnly || article.readingMinutes <= 5
+
+        matchesSearch && matchesDuration
+    }
+
     Column(
         modifier = modifier
     ) {
@@ -49,10 +78,30 @@ fun FeedScreen(
                 vertical = 8.dp
             )
         )
+        OutlinedTextField(
+            value=searchQuery,
+            onValueChange={
+                searchQuery=it
+            },
+            placeholder = {
+                Text("Buscar por título o autor")
+            }
+        )
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Switch(
+                checked = showShortReadsOnly,
+                onCheckedChange = {
+                    showShortReadsOnly = it
+                }
+            )
 
+            Text("Solo lecturas cortas")
+        }
         Separator()
 
-        articles.forEach { articleFor ->
+        filteredArticles.forEach { articleFor ->
             ArticleItem(
                 article = articleFor,
                 modifier = Modifier.padding(horizontal = 16.dp)
