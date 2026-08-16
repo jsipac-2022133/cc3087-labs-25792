@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -42,6 +43,8 @@ fun FeedScreen(
     articles: List<Article>,
     modifier: Modifier = Modifier
 ) {
+    var applauseCount = 0
+
     var searchQuery by rememberSaveable {
         mutableStateOf("")
     }
@@ -113,6 +116,14 @@ fun FeedScreen(
             )
 
             Text("Solo lecturas cortas")
+
+            TextButton(
+                onClick = {
+                    applauseCount++
+                }
+            ) {
+                Text("Aplaudir · $applauseCount")
+            }
         }
         Separator()
 
