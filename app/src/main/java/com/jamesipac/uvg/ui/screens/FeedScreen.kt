@@ -50,6 +50,10 @@ fun FeedScreen(
         mutableStateOf(false)
     }
 
+    var selectedTab by rememberSaveable {
+        mutableStateOf("Para ti")
+    }
+
     val filteredArticles = articles.filter { article ->
 
         val matchesSearch =
@@ -59,7 +63,13 @@ fun FeedScreen(
         val matchesDuration =
             !showShortReadsOnly || article.readingMinutes <= 5
 
-        matchesSearch && matchesDuration
+        val matchesTab = when (selectedTab) {
+            "Siguiendo" -> article.isAuthorFollowed
+            "Destacados" -> article.isFeatured
+            else -> true
+        }
+
+        matchesSearch && matchesDuration && matchesTab
     }
 
     Column(
@@ -73,11 +83,16 @@ fun FeedScreen(
         )
 
         TabsRow(
+            selectedTab = selectedTab,
+            onTabSelected = {
+                selectedTab = it
+            },
             modifier = Modifier.padding(
                 horizontal = 16.dp,
                 vertical = 8.dp
             )
         )
+
         OutlinedTextField(
             value=searchQuery,
             onValueChange={
