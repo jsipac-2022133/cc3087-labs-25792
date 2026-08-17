@@ -11,10 +11,12 @@ import androidx.compose.ui.Modifier
 import com.jamesipac.uvg.data.articles
 import com.jamesipac.uvg.ui.screens.FeedScreen
 import com.jamesipac.uvg.ui.theme.FeedArticulosTheme
+import android.util.Log
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d("LAB6_25792", "onCreate")
         enableEdgeToEdge()
 
         setContent {
@@ -29,5 +31,25 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+    override fun onStart() {
+        super.onStart()
+        Log.d("LAB6_25792", "onStart")
+    }
+    override fun onResume() {
+        super.onResume()
+        Log.d("LAB6_25792", "onResume")
+    }
+    override fun onPause() {
+        super.onPause()
+        Log.d("LAB6_25792", "onPause")
+    }
+    override fun onStop() {
+        super.onStop()
+        Log.d("LAB6_25792", "onStop")
+    }
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d("LAB6_25792", "onDestroy")
     }
 }
