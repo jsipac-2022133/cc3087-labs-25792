@@ -8,14 +8,16 @@ espaciado. Así, si lo uso en dos pantallas con márgenes diferentes, puedo camb
 padding desde cada pantalla sin tener que modificar el componente.
 
 Uso de IA:
-Utilicé ia como apoyo para resolver dudas sobre Jetpack Compose, comprender
+Utilicé IA como apoyo para resolver dudas sobre Jetpack Compose, comprender
 conceptos y revisar errores durante el desarrollo.
 */
 
 package com.jamesipac.uvg.ui.screens
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Switch
@@ -24,7 +26,6 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -78,9 +79,12 @@ fun FeedScreen(
         matchesSearch && matchesDuration && matchesTab
     }
 
+    val resultCount = filteredArticles.size
+
     Column(
         modifier = modifier
     ) {
+
         TopBar(
             modifier = Modifier.padding(
                 horizontal = 16.dp,
@@ -99,27 +103,62 @@ fun FeedScreen(
             )
         )
 
+        Separator(
+            modifier = Modifier.padding(horizontal = 16.dp)
+        )
+
         OutlinedTextField(
-            value=searchQuery,
-            onValueChange={
-                searchQuery=it
+            value = searchQuery,
+            onValueChange = {
+                searchQuery = it
             },
             placeholder = {
                 Text("Buscar por título o autor")
-            }
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(
+                    horizontal = 16.dp,
+                    vertical = 8.dp
+                )
         )
+
         Row(
-            verticalAlignment = Alignment.CenterVertically
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Switch(
-                checked = showShortReadsOnly,
-                onCheckedChange = {
-                    showShortReadsOnly = it
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Switch(
+                    checked = showShortReadsOnly,
+                    onCheckedChange = {
+                        showShortReadsOnly = it
+                    }
+                )
+
+                Text("Solo lecturas cortas")
+            }
+
+            Text(
+                text = if (resultCount == 1) {
+                    "1 resultado"
+                } else {
+                    "$resultCount resultados"
                 }
             )
+        }
 
-            Text("Solo lecturas cortas")
-
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.End
+        ) {
             TextButton(
                 onClick = {
                     applauseCount++
@@ -128,17 +167,39 @@ fun FeedScreen(
                 Text("Aplaudir · $applauseCount")
             }
         }
-        Separator()
 
-        filteredArticles.forEach { articleFor ->
-            ArticleItem(
-                article = articleFor,
-                modifier = Modifier.padding(horizontal = 16.dp)
-            )
+        Separator(
+            modifier = Modifier.padding(horizontal = 16.dp)
+        )
 
-            Separator(
-                modifier = Modifier.padding(horizontal = 16.dp)
-            )
+        if (filteredArticles.isEmpty()) {
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(24.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text("No se encontraron artículos")
+
+                Text(
+                    "Cambia la pestaña, la búsqueda o el filtro."
+                )
+            }
+
+        } else {
+
+            filteredArticles.forEach { articleFor ->
+
+                ArticleItem(
+                    article = articleFor,
+                    modifier = Modifier.padding(horizontal = 16.dp)
+                )
+
+                Separator(
+                    modifier = Modifier.padding(horizontal = 16.dp)
+                )
+            }
         }
     }
 }
