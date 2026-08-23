@@ -79,12 +79,46 @@ fun FeedScreen(
         matchesSearch && matchesDuration && matchesTab
     }
 
-    val resultCount = filteredArticles.size
+    FeedContent(
+        visibleArticles = filteredArticles,
+        searchQuery = searchQuery,
+        onSearchQueryChange = {
+            searchQuery = it
+        },
+        showShortReadsOnly = showShortReadsOnly,
+        onShortReadsOnlyChange = {
+            showShortReadsOnly = it
+        },
+        selectedTab = selectedTab,
+        onTabSelected = {
+            selectedTab = it
+        },
+        applauseCount = applauseCount,
+        onApplaud = {
+            applauseCount++
+        },
+        modifier = modifier
+    )
+}
+
+@Composable
+fun FeedContent(
+    visibleArticles: List<Article>,
+    searchQuery: String,
+    onSearchQueryChange: (String) -> Unit,
+    showShortReadsOnly: Boolean,
+    onShortReadsOnlyChange: (Boolean) -> Unit,
+    selectedTab: String,
+    onTabSelected: (String) -> Unit,
+    applauseCount: Int,
+    onApplaud: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val resultCount = visibleArticles.size
 
     Column(
         modifier = modifier
     ) {
-
         TopBar(
             modifier = Modifier.padding(
                 horizontal = 16.dp,
@@ -94,9 +128,7 @@ fun FeedScreen(
 
         TabsRow(
             selectedTab = selectedTab,
-            onTabSelected = {
-                selectedTab = it
-            },
+            onTabSelected = onTabSelected,
             modifier = Modifier.padding(
                 horizontal = 16.dp,
                 vertical = 8.dp
@@ -109,9 +141,7 @@ fun FeedScreen(
 
         OutlinedTextField(
             value = searchQuery,
-            onValueChange = {
-                searchQuery = it
-            },
+            onValueChange = onSearchQueryChange,
             placeholder = {
                 Text("Buscar por título o autor")
             },
@@ -130,15 +160,12 @@ fun FeedScreen(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Switch(
                     checked = showShortReadsOnly,
-                    onCheckedChange = {
-                        showShortReadsOnly = it
-                    }
+                    onCheckedChange = onShortReadsOnlyChange
                 )
 
                 Text("Solo lecturas cortas")
@@ -160,9 +187,7 @@ fun FeedScreen(
             horizontalArrangement = Arrangement.End
         ) {
             TextButton(
-                onClick = {
-                    applauseCount++
-                }
+                onClick = onApplaud
             ) {
                 Text("Aplaudir · $applauseCount")
             }
@@ -172,8 +197,7 @@ fun FeedScreen(
             modifier = Modifier.padding(horizontal = 16.dp)
         )
 
-        if (filteredArticles.isEmpty()) {
-
+        if (visibleArticles.isEmpty()) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -181,16 +205,10 @@ fun FeedScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text("No se encontraron artículos")
-
-                Text(
-                    "Cambia la pestaña, la búsqueda o el filtro."
-                )
+                Text("Cambia la pestaña, la búsqueda o el filtro.")
             }
-
         } else {
-
-            filteredArticles.forEach { articleFor ->
-
+            visibleArticles.forEach { articleFor ->
                 ArticleItem(
                     article = articleFor,
                     modifier = Modifier.padding(horizontal = 16.dp)
