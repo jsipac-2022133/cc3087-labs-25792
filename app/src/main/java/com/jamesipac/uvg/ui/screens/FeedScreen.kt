@@ -224,10 +224,38 @@ fun FeedContent(
 
 @Preview(showBackground = true)
 @Composable
-fun FeedScreenPreview() {
+fun FeedContentWithResultsPreview() {
     FeedArticulosTheme {
-        FeedScreen(
-            articles = articles
+        FeedContent(
+            visibleArticles = articles.filter {
+                it.author.contains("Daniel", ignoreCase = true)
+            },
+            searchQuery = "Daniel",
+            onSearchQueryChange = {},
+            showShortReadsOnly = false,
+            onShortReadsOnlyChange = {},
+            selectedTab = "Para ti",
+            onTabSelected = {},
+            applauseCount = 3,
+            onApplaud = {}
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun FeedContentEmptyPreview() {
+    FeedArticulosTheme {
+        FeedContent(
+            visibleArticles = emptyList(),
+            searchQuery = "sin coincidencia",
+            onSearchQueryChange = {},
+            showShortReadsOnly = false,
+            onShortReadsOnlyChange = {},
+            selectedTab = "Para ti",
+            onTabSelected = {},
+            applauseCount = 3,
+            onApplaud = {}
         )
     }
 }
