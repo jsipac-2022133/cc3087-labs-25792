@@ -9,5 +9,7 @@ data class Article(
     val readingMinutes: Int,
     val date: String,
     val avatarColor: Color,
-    val thumbnailColor: Color
+    val thumbnailColor: Color,
+    val isAuthorFollowed: Boolean,
+    val isFeatured: Boolean
 )

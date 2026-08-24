@@ -11,7 +11,9 @@ val articles=listOf(
         readingMinutes = 5,
         date = "14 jul",
         avatarColor = Color.DarkGray,
-        thumbnailColor = Color.Magenta
+        thumbnailColor = Color.Magenta,
+        isAuthorFollowed = true,
+        isFeatured = false
     ),
     Article(
         author = "Lucía Morales",
@@ -20,7 +22,9 @@ val articles=listOf(
         readingMinutes = 7,
         date = "20 jul",
         avatarColor = Color.Green,
-        thumbnailColor = Color.Yellow
+        thumbnailColor = Color.Yellow,
+        isAuthorFollowed = false,
+        isFeatured = true
     ),
     Article(
         author = "Andrés Castillo",
@@ -29,6 +33,8 @@ val articles=listOf(
         readingMinutes = 6,
         date = "2 ago",
         avatarColor = Color.LightGray,
-        thumbnailColor = Color.Blue
+        thumbnailColor = Color.Blue,
+        isAuthorFollowed = true,
+        isFeatured = true
     )
 )
